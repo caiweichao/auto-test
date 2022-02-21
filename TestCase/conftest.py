@@ -17,37 +17,3 @@ def pytest_collection_modifyitems(items):
         item.name = item.name.encode("utf-8").decode("unicode_escape")
         item._nodeid = item.nodeid.encode("utf-8").decode("unicode_escape")
 
-
-@pytest.fixture(scope='class')
-def connect_oms():
-    account = ReadYaml().get_mysql_config(mysql_name="Mysql_oms")
-    db = pymysql.Connect(host=account.get('host'),
-                         user=account.get('user'),
-                         password=account.get('password'),
-                         database=None,
-                         port=int(account.get('port')))
-    cursor = db.cursor()
-    yield cursor
-    cursor.close()
-    db.close()
-
-
-@pytest.fixture(scope='class')
-def connect_ota():
-    account = ReadYaml().get_mysql_config(mysql_name="Mysql_ota")
-    db = pymysql.Connect(host=account.get('host'),
-                         user=account.get('user'),
-                         password=account.get('password'),
-                         database=None,
-                         port=int(account.get('port')))
-    cursor = db.cursor()
-    yield cursor
-    cursor.close()
-    db.close()
-
-
-if __name__ == '__main__':
-    sql = "select sum(BP_PAY_AMOUNT) from tem_oms.ota_order_traveller where ORDER_ID = 116743856484608"
-    DB = connect_oms()
-    DB.execute(sql)
-    print(DB.fetc())

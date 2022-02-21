@@ -65,8 +65,9 @@ class ReturnTime:
         elif time_delta == 'min':
             res = datetime.datetime.now() + timedelta(minutes=num)
             return res.strftime(mode)
+        else:
+            raise "time_delta参数异常！"
 
 
 if __name__ == '__main__':
-    x = ReturnTime.get_Timestamp()
-    print(str(x) + 'caiwei')
+    print(ReturnTime.time_cal(num=0, mode='%Y-%m-%d 00:00:00',time_delta=123))

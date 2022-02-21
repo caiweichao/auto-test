@@ -6,6 +6,8 @@
 import json
 
 import jsonpath
+import jsonschema
+import allure
 
 from Commons.logs import Log
 
@@ -29,6 +31,24 @@ class JsonUtil:
                 return value[0]
         except Exception as e:
             Log.error(f"无法正常获取json内容请检查解析表达式{rule}\n{e}")
+
+    @staticmethod
+    def assert_jsonschema(response: dict, schema):
+        """
+        jsonschema与实际结果断言方法
+        :param response: 实际响应结果
+        :param schema: jsonschema
+        :return:
+        """
+        try:
+            Log.info("jsonschema校验开始")
+            jsonschema.validate(instance=response, schema=schema, format_checker=jsonschema.draft7_format_checker)
+            Log.info("jsonschema校验通过")
+            allure.step(f"jsonschema校验通过")
+        except jsonschema.exceptions.ValidationError or jsonschema.exceptions.SchemaError as e:
+            Log.error(f"jsonschema校验失败，报错信息为： {e}")
+            allure.step(f"jsonschema校验失败,报错信息为： {e}")
+            raise e
 
 
 if __name__ == '__main__':

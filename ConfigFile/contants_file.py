@@ -17,3 +17,5 @@ REPORT_HTML_PATH = os.path.join(BASIC_DIR, "Result/Report/")
 IMG_DIR = os.path.join(BASIC_DIR, "Result/ScreenShot")
 # 测试数据路径
 TEST_DATA_PATH = os.path.join(BASIC_DIR, 'TestData/')
+# 接口格式校验文件路径
+SCHEMA_DATA_PAHT = os.path.join(BASIC_DIR, 'TestData/SchemaData')

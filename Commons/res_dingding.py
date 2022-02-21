@@ -34,6 +34,20 @@ class DingRobot:
                         }
         Requset(method='post', url=self.res_url, data=msg_ding, headers=header)
 
+    def res_allure_report(self, job_name, report_url):
+        header = {"Content-Type": "application/json", "Charset": "UTF-8"}
+        msg_ding = {
+            "msgtype": "link",
+            "link": {
+                "text": "点击查看:\n  登录账号密码：tester/tester",
+                "title": f"【{job_name}自动化日常巡检完成】",
+                "picUrl": "",
+                "messageUrl": report_url
+
+            }
+        }
+        Requset(method='post', url=self.res_url, data=msg_ding, headers=header)
+
 
 if __name__ == '__main__':
     pass

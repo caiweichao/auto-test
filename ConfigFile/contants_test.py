@@ -14,8 +14,13 @@ FORMATTER = '%(asctime)s-%(filename)s-%(levelname)s-%(message)s'
 # 元素等待超时时间
 WAIT_ELEMENT = 15
 # 页面轮询元素间隔
-POLL_ELEMENT = 0.2
+POLL_ELEMENT = 0.5
 # 全局等待时间
-ALL_TIMEOUT = 20
-# Url配置
-
+ALL_TIMEOUT = 30
+# web端url
+PC_URL = "https://www.z-trip.cn"
+# h5端url
+H5_URL = "https://m.z-trip.cn"
+# admin端url
+ADMIN_URL = "https://admin.z-trip.cn"
+# ADMIN_URL = "https://admin.z-trip.cn/login?_top_=1&gray_env_admin=1"

@@ -3,32 +3,14 @@ global:
 # SIT:测试环境，UAT:预上线环境，PRO：线上环境
 #数据库链接参数-生产
 Mysql_PRO:
-  Mysql_oms:
-    host: 47.100.60.74
-    port: 13310
-    user: tem_rdn
-    password: kQRbAJyTSrTSKWuicdD2FA
-  Mysql_ota:
-    host: 47.100.60.74
-    port: 13309
-    user: tem_rdn
-    password: 5kC0NI28RIqHLFVfExuWmg
+
 # 数据库链接参数-测试
 Mysql_test:
-  host: 192.168.1.201
-  port: 3306
-  user: root
-  password: tem123456
+
 
 Account:
-  username: "13248231369"
-  password: "@cai000000"
+
 
 Api_test_data:
-  # es组api测试登录地址
-  _pass_port_es_Url: 'https://passport.z-trip.cn/jsonp/login2.json?username=13248231369&&password=@cai000000&loginType=account&chkpersist=1&service=https://ms.z-trip.cn'
-  # 酒店组api测试登录地址
-  _pass_port_hotal_Url: 'https://passport.z-trip.cn/jsonp/login2.json?username=13248231369&&password=@cai000000&loginType=account&chkpersist=1&service=https://ms.z-trip.cn'
-  _get_cookieurl: 'https://ms.z-trip.cn/login.json?'
 
 

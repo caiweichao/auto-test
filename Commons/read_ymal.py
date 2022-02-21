@@ -25,10 +25,10 @@ class ReadYaml:
     def __init__(self, file_url=None):
         try:
             if file_url is None:
-                with open(file=contants_file.YAML_FILE, mode='r',encoding='utf-8') as file:
+                with open(file=contants_file.YAML_FILE, mode='r', encoding='UTF-8') as file:
                     self.__yaml_data = yaml.load(file.read(), Loader=yaml.FullLoader)
             else:
-                with open(file=file_url, mode='r',encoding='utf-8') as file:
+                with open(file=file_url, mode='r') as file:
                     self.__yaml_data = yaml.load(file.read(), Loader=yaml.FullLoader)
         except Exception:
             raise Exception("yaml文件读取异常")

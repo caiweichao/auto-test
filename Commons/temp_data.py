@@ -5,3 +5,4 @@
 
 class BasicData:
     cookies = None
+    session = None

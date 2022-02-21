@@ -77,6 +77,16 @@ class BasicPage:
                 Log.error(f"测试结果截图，未能正确添加进入测试报告:{e}")
                 raise e
 
+    # 元素染色
+    def element_dyeing(self, element) -> None:
+        """
+        将被操作的元素染色
+        :rollback: 是否将元素回滚
+        :return: None
+        """
+        self.driver.execute_script("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');",
+                                   element)
+
     # 等待元素可见
     def __wait_element_visible(self, model, locator):
         """
@@ -139,8 +149,8 @@ class BasicPage:
         try:
             # 获取等待开始时间的时间戳
             __start_time = ReturnTime.get_Timestamp()
-            WebDriverWait(self.driver, timeout=WAIT_ELEMENT, poll_frequency=POLL_ELEMENT) \
-                .until(ec.presence_of_element_located(locator=locator))
+            WebDriverWait(self.driver, timeout=WAIT_ELEMENT, poll_frequency=POLL_ELEMENT).until(
+                ec.presence_of_element_located(locator=locator))
             # 计算元素等待的时间
             __wait_time = ReturnTime.get_Timestamp() - __start_time
             Log.debug(f"页面：{model}上的元素{locator}已存在，共计等待{__wait_time:0.2f}秒")
@@ -197,7 +207,7 @@ class BasicPage:
             Log.error(f"定位{model}页面的元素:{locator},mode参数传值异常,入参值为：{mode}")
 
     # 元素定位
-    def find_element(self, model: str, locator: tuple, mode="visible"):
+    def find_element(self, locator: tuple, mode="visible", model=None):
         """
         定位元素，支持所有定位单个元素的定位表达式
         :param model: 传参定位的是哪个页面 字符串形式
@@ -209,6 +219,7 @@ class BasicPage:
         try:
             Log.debug(f"正在定位{model}页面的: {locator} 的元素")
             element = self.driver.find_element(*locator)
+            self.element_dyeing(element=element)
             return element
         except TimeoutException:
             Log.error(f"页面:{model},定位元素:{locator}定位超时")
@@ -253,7 +264,7 @@ class BasicPage:
             # 代码执行比页面渲染速度快 这里放0.5秒等待页面渲染
             time.sleep(0.5)
             self.driver.execute_script('arguments[0].scrollIntoView({0});'.format(alignment), element)
-            # 休眠1秒让页面可以正常的滚动到对应的位置再执行下去
+            # 休眠1秒让页面可以正常滚动到对应的位置再执行下去
             time.sleep(1)
         except Exception as e:
             Log.error(f"{model}页面的元素:{locator}移动失败\n{e}")
@@ -272,8 +283,6 @@ class BasicPage:
         :return: 无返回值
         """
         model = self.get_current_url_path()
-        WebDriverWait(self.driver, timeout=WAIT_ELEMENT, poll_frequency=POLL_ELEMENT) \
-            .until(ec.element_to_be_clickable(locator=locator))
         element = self.find_element(model=model, locator=locator, mode=mode)
         if move_elemnet is True:
             self.__move_element_visible(model=model, locator=locator,
@@ -300,8 +309,6 @@ class BasicPage:
         :param move_elemnet: 这里是布尔值 传入True 表示需要让元素滚动到页面可见区域 False 表示不用
         :return: 点击的元素的文本
         """
-        WebDriverWait(self.driver, timeout=WAIT_ELEMENT, poll_frequency=POLL_ELEMENT) \
-            .until(ec.element_to_be_clickable(locator=locator))
         model = self.get_current_url_path()
         elements = self.find_elements(locator=locator, mode=mode)
         click_num: int = random.randint(num, len(elements) - 1)
@@ -310,6 +317,7 @@ class BasicPage:
                                         element=elements, alignment=alignment)
         try:
             element = elements[click_num]
+            self.element_dyeing(element)
             Log.debug(f"点击:{model}页面,属性为{locator}的元素中的{click_num}位")
             element.click()
         except Exception as e:
@@ -337,6 +345,8 @@ class BasicPage:
         try:
             Log.debug(f"输入操作:{model}页面下的属性为:{locator}的元素,输入内容为{content}")
             element.send_keys(content)
+            self.driver.execute_script(
+                "arguments[0].setAttribute('style', 'background: write; border: 1px solid black;');", element)
         except Exception as e:
             self.set_img_error()
             Log.error(f"页面{model}的属性: {locator} 输入操作失败")
@@ -525,17 +535,17 @@ class BasicPage:
         self.driver.switch_to.window(new[-1])
 
     # 判断单元素是否存在
-    def is_element_exist(self, locator):
+    def is_element_exist(self, locator, timeout=10):
         """
         判断单元素是否存在
+        :param timeout: 默认超时时间
         :param locator: 传入元素定位表达式
         :return: 返回布尔值 true表示元素存在 false表示元素不存在
         """
         model = self.get_current_url_path()
         try:
             Log.debug(f'判断{model}页面的元素{locator}是否存在')
-            WebDriverWait(self.driver, timeout=20, poll_frequency=0.1).until(
-                ec.visibility_of_element_located(locator=locator))
+            WebDriverWait(self.driver, timeout=timeout, poll_frequency=0.1).until(ec.visibility_of_element_located(locator=locator))
             return True
         except Exception:
             return False
@@ -549,7 +559,7 @@ class BasicPage:
             # 获取等待开始时间的时间戳
             __start_time = ReturnTime.get_Timestamp()
             Log.debug(f'判断{model}页面的元素{locator}是否消失了')
-            WebDriverWait(self.driver, timeout=10, poll_frequency=0.1).until(
+            WebDriverWait(self.driver, timeout=60, poll_frequency=0.1).until(
                 ec.invisibility_of_element_located(locator=locator))
             # 计算元素等待的时间
             __wait_time = ReturnTime.get_Timestamp() - __start_time
@@ -570,3 +580,16 @@ class BasicPage:
             self.driver.switch_to.frame(frame_reference=self.find_element(model=model, locator=locator))
         except Exception:
             Log.error(f'{model}页面的ifram切换失败')
+
+    # 鼠标悬停
+    def mouse_over(self, locator, times) -> None:
+        """
+        鼠标悬停功能
+        :param locator: 元素定位表达式
+        :param times: 悬停时间
+        :return: None
+        """
+        model = self.get_current_url_path()
+        element = self.find_element(model=model, locator=locator)
+        ActionChains(self.driver).move_to_element(to_element=element).perform()
+        time.sleep(times)
