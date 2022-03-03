@@ -5,9 +5,9 @@
 
 import json
 
+import allure
 import jsonpath
 import jsonschema
-import allure
 
 from Commons.logs import Log
 
@@ -22,7 +22,7 @@ class JsonUtil:
         return json.dumps(data)
 
     @staticmethod
-    def jsonToOneValue(json: str, rule, mode=None):
+    def jsonToOneValue(json: str, rule: str, mode=None):
         try:
             value = jsonpath.jsonpath(json, rule)
             if mode == "more":

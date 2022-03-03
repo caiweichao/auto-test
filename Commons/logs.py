@@ -51,7 +51,7 @@ class Log:
     # 指定输出渠道
     # 控制台输出
     ch = logging.StreamHandler()
-    ch.setLevel('ERROR')
+    ch.setLevel(LOG_LEVEL_CONSILE)
     ch.setFormatter(formatter)
     # INFO日志输出
     handler = logging.FileHandler(filename=log_file, encoding='utf-8')

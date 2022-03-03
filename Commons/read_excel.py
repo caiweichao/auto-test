@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Author  : caiweichao
-# @explain : 读取excel中的测试用例
+# @explain : 读取excel里的测试用例
 
 import openpyxl
 

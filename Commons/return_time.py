@@ -29,6 +29,14 @@ class ReturnTime:
         return datetime.datetime.now().day
 
     @staticmethod
+    def get_hour() -> int:
+        """
+
+        :return: 返回当前的小时数
+        """
+        return datetime.datetime.now().hour
+
+    @staticmethod
     def get_time():
         """
         :return: 获取当前的的年月日
@@ -51,7 +59,7 @@ class ReturnTime:
         return now
 
     @staticmethod
-    def time_cal(num, mode, time_delta=None):
+    def time_cal(mode, num=0, time_delta=None):
         """
         :return: 返回当前时间 + n天
         "%Y-%m-%d %H:%M"
@@ -70,4 +78,5 @@ class ReturnTime:
 
 
 if __name__ == '__main__':
-    print(ReturnTime.time_cal(num=0, mode='%Y-%m-%d 00:00:00',time_delta=123))
+
+    print(ReturnTime.get_hour())

@@ -22,7 +22,7 @@ class Requset:
     @allure.step("发起请求")
     def __init__(self, method: str, url: str, data=None, cookies=None, headers=None):
         try:
-            Log.info(f'开始发起请求: 请求方式{method}， 请求url={url}，cookies{cookies}，请求头header={headers} ,\n请求参数={data}')
+            # Log.info(f'开始发起请求: 请求方式{method}， 请求url={url}，cookies={cookies}，请求头header={headers} ,\n请求参数={data}')
             if method.upper() == "GET":
                 self._res = requests.get(url=url, params=data, headers=headers, cookies=cookies)
             elif method.upper() == "POST":
@@ -51,6 +51,24 @@ class Requset:
     def get_response_time(self):
         return self._res.elapsed.total_seconds()
 
+    # 获取响应后打印相关信息
+    def print_log(self, case_title=None):
+        """
+        获取响应后打印相关信息
+        :param case_title: 调试用例的title
+        :return: None
+        """
+        if case_title:
+            Log.info(f"------------------------用例: {case_title}------------------------")
+        Log.info("请求信息:")
+        Log.info(f"request_url:{self._res.request.url}")
+        Log.info(f"request_headers:{self._res.request.headers}")
+        Log.info(f"request_body:{self._res.request.body}")
+        Log.info(f"request_cookies:{self._res.cookies}")
+        Log.info("响应信息:")
+        Log.info(f"response_headers:{self._res.headers}")
+        Log.info(f"response_body:{self._res.text}")
+
 
 if __name__ == '__main__':
     rest = Requset(method="post",
@@ -59,4 +77,4 @@ if __name__ == '__main__':
                          "pwd": 100000000},
                    headers={"Content-Type": "application/json",
                             "X-Lemonban-Media-Type": "lemonban.v1"})
-    print(rest.get_json())
+    rest.print_log()

@@ -98,8 +98,8 @@ class Mysql_Util:
 
 
 if __name__ == '__main__':
-    sql = "select ID from tem_platform.ip_district where P_ID = 10801;"
-    with Mysql_Util(mysql_name='Mysql_ota') as db:
+    sql = "select ID from tem_platform_uat.ip_district where P_ID = 10801;"
+    with Mysql_Util(mysql_name='Mysql_test') as db:
         value = db.fetch_all(sql)
     for x in value:
         print(x[0])

@@ -55,5 +55,5 @@ class ReadYaml:
 
 
 if __name__ == '__main__':
-    user = ReadYaml().get_mysql_config(mysql_name='Mysql_oms')
-    print(user)
+    user:dict = ReadYaml(file_url=contants_file.FACTORING_CODE).get_every_config("error_code")
+    print(user.get("0"))
