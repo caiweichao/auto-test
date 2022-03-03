@@ -20,3 +20,8 @@ PC_URL = ""
 H5_URL = ""
 # admin端url
 ADMIN_URL = ""
+# jenkins配置
+JENKINS_URL = ""
+J_USERNAME = ""
+J_PWD = ""
+
